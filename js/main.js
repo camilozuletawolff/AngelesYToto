@@ -2,7 +2,7 @@
 let contador = Number(localStorage.getItem('contadorExtrañar') || 0);
 let fotosDisponibles = [];
 let modalTimeout;
-const TOTAL_FOTOS_ESPERADAS = 7; // Cambia si tienes más fotos
+const TOTAL_FOTOS_ESPERADAS = 15; // Cambia si tienes más fotos
 let fotosActualesGaleria = [];
 
 // Elementos del DOM
@@ -20,15 +20,20 @@ function inicializarFotos() {
   for (let i = 1; i <= TOTAL_FOTOS_ESPERADAS; i++) {
     fotosDisponibles.push(`fotos/foto${i}.JPG`);
   }
+  console.log(`Fotos inicializadas: ${fotosDisponibles.length} fotos encontradas`);
+  console.log(fotosDisponibles);
 }
 
 // Función para seleccionar foto aleatoria
 function fotoAleatoria() {
   if (fotosDisponibles.length === 0) {
+    console.warn('fotosDisponibles está vacío');
     return 'fotos/foto1.JPG';
   }
   const indice = Math.floor(Math.random() * fotosDisponibles.length);
-  return fotosDisponibles[indice];
+  const fotoSeleccionada = fotosDisponibles[indice];
+  console.log(`Foto seleccionada: ${fotoSeleccionada} de ${fotosDisponibles.length} disponibles`);
+  return fotoSeleccionada;
 }
 
 // Función para seleccionar N fotos aleatorias sin repetir (Fisher-Yates)
@@ -81,20 +86,12 @@ function mostrarModalConFoto(fotoUrl) {
 
 // Mostrar modal con foto aleatoria (para el botón)
 function mostrarModal(e) {
-    console.log('Botón Extrañar clickeado');
   if (e) e.stopPropagation();
   contador = Number(localStorage.getItem('contadorExtrañar') || 0) + 1; // Increment and store in localStorage
   localStorage.setItem('contadorExtrañar', contador);
   contadorNumero.textContent = contador;
-  // Usar solo las fotos realmente existentes en la galería (rutas relativas)
-  let galeriaFotos = [];
-  for (let i = 1; i <= 4; i++) {
-    const fotoEl = document.getElementById(`foto${i}`);
-    if (fotoEl && fotoEl.getAttribute('src') && fotoEl.getAttribute('src').toUpperCase().endsWith('.JPG')) {
-      galeriaFotos.push(fotoEl.getAttribute('src'));
-    }
-  }
-  let foto = galeriaFotos.length > 0 ? galeriaFotos[Math.floor(Math.random() * galeriaFotos.length)] : 'fotos/foto1.JPG';
+  // Usar foto aleatoria de TODAS las disponibles (foto1 a foto15)
+  let foto = fotoAleatoria();
   mostrarModalConFoto(foto);
 }
 
