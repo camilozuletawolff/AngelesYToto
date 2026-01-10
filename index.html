@@ -2,46 +2,72 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-
-  <!-- MUY IMPORTANTE para iPhone -->
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
   <title>Ángeles y Toto</title>
-
   <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
 
-  <header class="hero">
-    <h1>Ángeles y Toto</h1>
-    <p>Nuestro primer aniversario</p>
-  </header>
+  <!-- PANTALLA 1: INICIO -->
+  <div id="screen-inicio" class="screen active">
+    <div class="inicio-content">
+      <h1>Feliz primer mes</h1>
+      <p>Para: Angeles</p>
+      <p class="tap-text">Toca para continuar</p>
+    </div>
+  </div>
 
-  <main class="content">
+  <!-- PANTALLA 2: GALERÍA Y VIDEO -->
+  <div id="screen-galeria" class="screen">
+    <header class="header-galeria">
+      <button id="btn-volver" class="btn-volver">←</button>
+      <h1>31 dias loco por ti</h1>
+      <div style="width: 40px;"></div>
+    </header>
 
-    <section class="section">
-      <h2>Nuestros recuerdos</h2>
-
-      <div class="gallery">
-        <img src="fotos/foto1.jpg" alt="Recuerdo 1">
-        <img src="fotos/foto2.jpg" alt="Recuerdo 2">
+    <main class="galeria-content">
+      <div class="galeria-fotos">
+        <img id="foto1" src="fotos/foto10.jpg" alt="Foto 1">
+        <img id="foto2" src="fotos/foto15.jpg" alt="Foto 2">
+        <img id="foto3" src="fotos/foto7.jpg" alt="Foto 3">
+        <img id="foto4" src="fotos/foto4.jpg" alt="Foto 4">
       </div>
-    </section>
 
-    <section class="section">
-      <h2>Un video especial</h2>
+      <section class="section-video">
+  <h2>Un video especial</h2>
 
-      <!-- Video local -->
-      <video controls playsinline>
-        <source src="videos/recuerdo.mp4" type="video/mp4">
-      </video>
-    </section>
+  <div class="video-wrapper">
+    <iframe
+      src="https://www.youtube.com/embed/cjIlQkN0F6A"
+      title="Un video especial"
+      frameborder="0"
+      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+      allowfullscreen>
+    </iframe>
+  </div>
+</section>
 
-  </main>
 
-  <footer class="footer">
-    <p>Con amor ❤️</p>
-  </footer>
+      <button id="btn-extrañar" class="btn-extranar">
+        <span id="contador-texto">Presioname cuando me extrañes</span>
+        <span id="contador-numero" class="contador-numero">0</span>
+      </button>
 
+      <footer class="footer">
+        <p>Con amor ❤️</p>
+        <p>Toto</p>
+      </footer>
+    </main>
+  </div>
+
+  <!-- MODAL: Foto aleatoria + mensaje -->
+  <div id="modal-extranar" class="modal-extranar">
+    <div class="modal-content">
+      <img id="modal-foto" src="" alt="Foto especial">
+      <p class="modal-mensaje">Te quiero mucho ❤️</p>
+    </div>
+  </div>
+
+  <script src="js/main.js"></script>
 </body>
 </html>
