@@ -1,5 +1,5 @@
 // Estado de la app
-let contador = 0;
+let contador = Number(localStorage.getItem('contadorExtrañar') || 0);
 let fotosDisponibles = [];
 let modalTimeout;
 const TOTAL_FOTOS_ESPERADAS = 7; // Cambia si tienes más fotos
@@ -14,19 +14,18 @@ const contadorNumero = document.getElementById('contador-numero');
 const modal = document.getElementById('modal-extranar');
 const modalFoto = document.getElementById('modal-foto');
 
-// Inicializar fotos disponibles
+// Inicializar fotos disponibles (solo .JPG mayúsculas)
 function inicializarFotos() {
   fotosDisponibles = [];
   for (let i = 1; i <= TOTAL_FOTOS_ESPERADAS; i++) {
-    console.log(`Agregando foto${i}.jpg a fotosDisponibles`);
-    fotosDisponibles.push(`fotos/foto${i}.jpg`);
+    fotosDisponibles.push(`fotos/foto${i}.JPG`);
   }
 }
 
 // Función para seleccionar foto aleatoria
 function fotoAleatoria() {
   if (fotosDisponibles.length === 0) {
-    return 'fotos/foto1.jpg';
+    return 'fotos/foto1.JPG';
   }
   const indice = Math.floor(Math.random() * fotosDisponibles.length);
   return fotosDisponibles[indice];
@@ -68,8 +67,8 @@ function volver() {
 
 // Mostrar modal con foto específica
 function mostrarModalConFoto(fotoUrl) {
-  contador++;
-  contadorNumero.textContent = contador;
+  // contador++; // Removed to prevent double increment
+  contadorNumero.textContent = contador; // Display the current count
   modalFoto.src = fotoUrl;
   modal.classList.add('active');
   modalFoto.classList.add('active');
@@ -82,8 +81,21 @@ function mostrarModalConFoto(fotoUrl) {
 
 // Mostrar modal con foto aleatoria (para el botón)
 function mostrarModal(e) {
+    console.log('Botón Extrañar clickeado');
   if (e) e.stopPropagation();
-  mostrarModalConFoto(fotoAleatoria());
+  contador = Number(localStorage.getItem('contadorExtrañar') || 0) + 1; // Increment and store in localStorage
+  localStorage.setItem('contadorExtrañar', contador);
+  contadorNumero.textContent = contador;
+  // Usar solo las fotos realmente existentes en la galería (rutas relativas)
+  let galeriaFotos = [];
+  for (let i = 1; i <= 4; i++) {
+    const fotoEl = document.getElementById(`foto${i}`);
+    if (fotoEl && fotoEl.getAttribute('src') && fotoEl.getAttribute('src').toUpperCase().endsWith('.JPG')) {
+      galeriaFotos.push(fotoEl.getAttribute('src'));
+    }
+  }
+  let foto = galeriaFotos.length > 0 ? galeriaFotos[Math.floor(Math.random() * galeriaFotos.length)] : 'fotos/foto1.JPG';
+  mostrarModalConFoto(foto);
 }
 
 // Cerrar modal
@@ -95,9 +107,9 @@ function cerrarModal() {
 }
 
 // Event Listeners
-screenInicio.addEventListener('click', mostrarGaleria);
-btnVolver.addEventListener('click', volver);
-btnExtrañar.addEventListener('click', mostrarModal);
+if (screenInicio) screenInicio.addEventListener('click', mostrarGaleria);
+if (btnVolver) btnVolver.addEventListener('click', volver);
+if (btnExtrañar) btnExtrañar.addEventListener('click', mostrarModal);
 
 // Cerrar modal al hacer click en el fondo (fuera del contenido)
 modal.addEventListener('click', (e) => {
@@ -115,4 +127,7 @@ if (modalContent) {
 }
 
 // Inicializar
-// inicializarFotos();
+inicializarFotos();
+// Cargar contador persistente
+contador = Number(localStorage.getItem('contadorExtrañar') || 0);
+contadorNumero.textContent = contador;
